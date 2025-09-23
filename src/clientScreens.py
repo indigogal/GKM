@@ -16,6 +16,7 @@ class ClientesMainMenu(Screen):
                     yield Button("Buscar", id="search")
                     yield Button("Editar", id="edit")
                     yield Button("Desactivar", id="delete")
+                    yield Button("Reporte", id="show")
         yield Footer()
 
     @on(Button.Pressed, "#add")
@@ -38,18 +39,37 @@ class ClientesMainMenu(Screen):
 class SearchClientes(Screen):
     def compose(self) -> ComposeResult:
         yield Header()
+        with Center():
+            with Middle():
+                with Vertical():
+                    yield Label("Busqueda de clientes")
+                    yield Input(placeholder="Nombre")
+                    yield Button("Buscar", id="searchStart")
         yield Footer()
 
 
 class EditClientes(Screen):
     def compose(self) -> ComposeResult:
         yield Header()
+        with Center():
+            with Middle():
+                with Vertical():
+                    yield Label("Edicion de clientes")
+                    yield Input(placeholder="ID numerico del cliente, obtengala del menu de busqueda")
+                    yield Button("Buscar")
         yield Footer()
 
 
 class DeleteClientes(Screen):
     def compose(self) -> ComposeResult:
         yield Header()
+        with Center():
+            with Middle():
+                with Vertical():
+                    yield Label("Desactivacion de clientes")
+                    yield Input(placeholder="ID numerico del cliente, obtengala del menu de busqueda")
+                    yield Button("Desactivar")
+                    yield Button("Reactivar")
         yield Footer()
 
 
@@ -70,3 +90,7 @@ class AddClientes(Screen):
                     yield Input(placeholder="Referencias")
                     yield Button("Insertar")
         yield Footer()
+
+class ClientesReport(Screen):
+    def compose(self) -> ComposeResult:
+        yield Header

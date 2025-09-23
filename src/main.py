@@ -1,7 +1,7 @@
 from textual.app import App, ComposeResult
 from textual.containers import Middle, Center
 from textual.widgets import Footer, Header, Label
-from screens import AddClientes, ClientesMainMenu, DeleteClientes, EditClientes, SearchClientes
+from clientScreens import AddClientes, ClientesMainMenu, DeleteClientes, EditClientes, SearchClientes
 from pyfiglet import Figlet
 
 
@@ -30,6 +30,9 @@ class ProyectoApp(App):
         self.install_screen(AddClientes(), name="clientesAdd")
         self.install_screen(SearchClientes(), name="clientesSearch")
         self.install_screen(DeleteClientes(), name="clientesDelete")
+        # Ordenes
+
+        # Menus y Platillos
 
 #    def action_menu_menu(self):
 #        self.push_screen(ClientesMainMenu)
