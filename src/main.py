@@ -1,49 +1,36 @@
-from textual.app import App, ComposeResult
-from textual.containers import Middle, Center
-from textual.widgets import Footer, Header, Label
-from clientScreens import AddClientes, ClientesMainMenu, DeleteClientes, EditClientes, SearchClientes
-from pyfiglet import Figlet
+import os
+from rich.align import Align
+from rich.box import box
+from rich.console import RenderableType
+from rich.table import Table, header
 
+def menuLoop() -> None:
+    while True:
+        pass
 
-class ProyectoApp(App):
-    CSS_PATH = "styles.tcss"
+def tablaMenuPrincipal() -> RenderableType:
+    table = Table(
+        title="Menu principal",
+        box=box.MINIMAL,
+        show_header=False
+    )
+    table.add_column(justify="center")
+    table.add_row("1. Ordenes")
+    table.add_row("2. Menus y Platillos")
+    table.add_row("3. Clientes")
+    return Align.center(table)
 
-    BINDINGS = [("C", "push_screen('clientes')", "Clientes"),
-                ("O", "order_menu", "Ordenes"),
-                ("M", "menu_menu", "Menus y Platillos")]
+def clearScreen() -> None:
+    if os.name != "nt":
+        os.system('clear')
+    else:
+        os.system('cls')
 
-    def compose(self) -> ComposeResult:
-        yield Header(show_clock=True)
-        with Center():
-            with Middle():
-                yield Label(Figlet(font="big").renderText("Ghost Kitchen Manager"))
-        yield Footer()
+def create_header() -> RenderableType:
+    head = header
 
-    def on_mount(self) -> None:
-        self.theme = "gruvbox"
-        self.title = "GKM"
-        self.sub_title = "Ghost Kitchen Manager"
-        # Installs
-        # Clientes
-        self.install_screen(ClientesMainMenu(), name="clientes")
-        self.install_screen(EditClientes(), name="clientesEdit")
-        self.install_screen(AddClientes(), name="clientesAdd")
-        self.install_screen(SearchClientes(), name="clientesSearch")
-        self.install_screen(DeleteClientes(), name="clientesDelete")
-        # Ordenes
-
-        # Menus y Platillos
-
-#    def action_menu_menu(self):
-#        self.push_screen(ClientesMainMenu)
-#
-#    def action_client_menu(self):
-#        pass
-#
-#    def action_order_menu(self):
-#        pass
-
-
+def createPanelCentral() -> RenderableType:
+    pass
 if __name__ == "__main__":
-    app = ProyectoApp()
-    app.run()
+    clearScreen()
+    menuLoop()
