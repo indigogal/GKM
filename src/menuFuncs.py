@@ -3,7 +3,7 @@ from datetime import date
 import pymysql
 
 def createMenu(conn: pymysql.Connection, inputArr:  List[int], tipo: str, 
-               numSemana: int, anio: int, fechaInicio: date, fechaFin: date) -> bool:
+               numSemana: int, anio: int) -> bool:
    #  Args:
    #      conn: PyMySQL database connection
    #      inputArr: Array of exactly 5 platillo IDs as string "1,2,3,4,5" or list [1,2,3,4,5]
@@ -75,9 +75,9 @@ def createMenu(conn: pymysql.Connection, inputArr:  List[int], tipo: str,
             try:
                 cursor.execute("""
                     INSERT INTO menus_semanales 
-                    (tipoMenu, numSemana, anio, precioVenta, fechaInicio, fechaFin)
+                    (tipoMenu, numSemana, anio, precioVenta)
                     VALUES (%s, %s, %s, %s, %s, %s)
-                """, (tipo, numSemana, anio, precioVenta, fechaInicio, fechaFin))
+                """, (tipo, numSemana, anio, precioVenta))
                 
                 menuID = cursor.lastrowid
                 
@@ -147,6 +147,7 @@ def getMenus(conn: pymysql.Connection):
         print(f"Connection o query fallo\nError: {e}\nContacte a su administrador de sistemas")
         return (()) # Tupla nula
 
+# TODO: ADD PLATILLO NAME IN SELECT
 def getMenu(conn: pymysql.Connection, numSemana: int):
     try:
         with conn.cursor() as c:

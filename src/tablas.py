@@ -177,6 +177,79 @@ def tablaMenuPlatillos() -> RenderableType:
     table.add_row("4. Listar Menus")
     return Align.center(table)
 
+def tablaCrearMenu1() -> RenderableType:
+    table = Table(
+        title="Crear Menu",
+        box=box.MINIMAL,
+        show_header=False
+    )
+    table.add_column(justify="left")
+    table.add_row("Inserte tipo de menu, saludable o economico")
+    return Align.center(table)
+
+def tablaCrearMenu2() -> RenderableType:
+    table = Table(
+        title="Crear Menu",
+        box=box.MINIMAL,
+        show_header=False
+    )
+    table.add_column(justify="left")
+    table.add_row("Inserte numero de semana")
+    return Align.center(table)
+
+def tablaCrearMenu3() -> RenderableType:
+    table = Table(
+        title="Crear Menu",
+        box=box.MINIMAL,
+        show_header=False
+    )
+    table.add_column(justify="left")
+    table.add_row("Inserte año")
+    return Align.center(table)
+
+
+
+def tablaCrearMenu5(i: int) -> RenderableType:
+    table = Table(
+        title="Crear Menu",
+        box=box.MINIMAL,
+        show_header=False
+    )
+    table.add_column(justify="left")
+    table.add_row(f"Se han insertado {i} platillos, faltan {5-i}")
+    table.add_row("Inserte ID del platillo")
+    return Align.center(table)
+
+def tableCrearPlatillo1() -> RenderableType:
+    table = Table(
+        title="Crear Platillo",
+        box=box.MINIMAL,
+        show_header=False
+    )
+    table.add_column(justify="left")
+    table.add_row("Inserte nombre del platillo")
+    return Align.center(table)
+
+def tableCrearPlatillo2() -> RenderableType:
+    table = Table(
+        title="Crear Platillo",
+        box=box.MINIMAL,
+        show_header=False
+    )
+    table.add_column(justify="left")
+    table.add_row("Inserte descripcion del platillo")
+    return Align.center(table)
+
+def tableCrearPlatillo3() -> RenderableType:
+    table = Table(
+        title="Crear Platillo",
+        box=box.MINIMAL,
+        show_header=False
+    )
+    table.add_column(justify="left")
+    table.add_row("Inserte precio del platillo")
+    return Align.center(table)
+
 # Mostrar DataFrame
 def display_dataframe_in_box(df: pd.DataFrame, title: str) -> RenderableType:
     rich_table = Table(

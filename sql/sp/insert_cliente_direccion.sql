@@ -1,4 +1,4 @@
-CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertarCliente_Direccion`(
+CREATE PROCEDURE `InsertarCliente_Direccion`(
 
 IN p_nombre VARCHAR(100),
 -- IN p_direccionDeEntregas INT, 
