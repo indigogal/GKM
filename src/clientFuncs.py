@@ -40,5 +40,7 @@ def addCliente(conn: pymysql.Connection, nombre: str, email: str, telefono: str,
 # def updateCliente(conn: pymysql.Connection, clienteID: int) -> bool:
 #     pass
 
-def getClientes(conn: pymysql.Connection):
-    pass
+def getClientes(conn: pymysql.Connection) -> tuple:
+    with conn.cursor() as c:
+        c.execute("SELECT c.clienteID, c.nombre, c.telefono, c.email, d.calle, d.numero, d.numeroInt, d.codigoPost, d.referenciasExtra FROM clientes c INNER JOIN direcciones d ON c.direccionDeEntregas = d.direccionID")
+        return c.fetchall()

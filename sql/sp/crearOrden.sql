@@ -1,5 +1,4 @@
 CREATE PROCEDURE `crearOrden`(
-
     IN p_clienteID INT,
     IN p_qtyMenuSaludable INT,
     IN p_qtyMenuEcon INT
@@ -31,7 +30,6 @@ VALUES(p_clienteID, v_precioTotal, FALSE, CURRENT_DATE(), v_numSemana, v_year);
 	 WHERE m.numSemana = v_numSemana AND m.anio=v_year and m.tipo='Saludable'
 	 limit 1;
 END IF;
-
     IF (p_qtyMenuEcon > 0) THEN
         INSERT INTO detalle_orden(ordenID, menuSemanalID, cantidad)
         SELECT v_ordenID, m.menuSemanalID, p_qtyMenuEcon
@@ -39,6 +37,4 @@ END IF;
         WHERE m.numSemana = v_numSemana AND m.year = v_year AND m.tipo = 'Económico'
         LIMIT 1;
     END IF;
-
-
 END
