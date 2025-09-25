@@ -1,36 +1,114 @@
 import os
+import pandas as pd
+import pymysql
 from rich.align import Align
-from rich.box import box
-from rich.console import RenderableType
-from rich.table import Table, header
+from rich import box
+from rich.console import Console, RenderableType
+from rich.table import Table
+from rich.panel import Panel
+from tablas import *
+from connHelper import *
+import orderFuncs
+import clientFuncs
 
-def menuLoop() -> None:
+console = Console()
+
+def menuLoop(conn:pymysql.Connection) -> None:
     while True:
-        pass
+        console.print(Align.center(createPanelCentrado(tablaMenuPrincipal()),vertical="middle"))
+        console.print(Align.center("Introduzca su opcion"))
+        user_input = input("\n" + " " * (os.get_terminal_size().columns // 2 - 2) + "> ")
+        match user_input:
+            # Ordenes
+            case "1":
+                console.print(Align.center(createPanelCentrado(tablaMenuOrdenes())))
+                menu_input = input("\n" + " " * (os.get_terminal_size().columns // 2 - 2) + "> ")
+                match menu_input:
+                    case "1":
+                        params = []
+                        console.print(Align.center(tablaCrearOrdenID()))
+                        params.append(int(input("\n" + " " * (os.get_terminal_size().columns // 2 - 2) + "> ")))
+                        console.print(Align.center(tablaCrearOrdenqtySalud()))
+                        params.append(int(input("\n" + " " * (os.get_terminal_size().columns // 2 - 2) + "> ")))
+                        console.print(Align.center(tablaCrearOrdenqtyEcon()))
+                        params.append(int(input("\n" + " " * (os.get_terminal_size().columns // 2 - 2) + "> ")))
+                        if (orderFuncs.createOrden(conn,clienteID=params[0],qtySaludable=params[1],qtyEcon=params[2])):
+                            console.print(Align.center("Orden capturada correctamente!"))
+                    case "2":
+                        console.print(display_dataframe_in_box(pd.DataFrame(orderFuncs.getAllOrdenes(conn),
+                        columns=[
+                        "ID Orden","ID Cliente","Qty Saludable",
+                        "Qty Economico","Precio Total","En Curso",
+                        "Fecha Apartado","Semana Asignada","Año"]),
+                        title="Ordenes"))
+                    case "3":
+                        console.print(Align.center(tablaPedirIDCliente()))
+                        userID = (int(input("\n" + " " * (os.get_terminal_size().columns // 2 - 2) + "> ")))
+                        console.print(display_dataframe_in_box(pd.DataFrame(orderFuncs.getOrdenesFromUser(conn,userID),
+                        columns=[
+                        "ID Orden","ID Cliente","Qty Saludable",
+                        "Qty Economico","Precio Total","En Curso",
+                        "Fecha Apartado","Semana Asignada","Año"]),
+                        title="Ordenes"))
+            # Clientes
+            case "3":
+                console.print(Align.center(createPanelCentrado(tablaMenuClientes())))
+                menu_input = input("\n" + " " * (os.get_terminal_size().columns // 2 - 2) + "> ")
+                match menu_input:
+                    case "1":
+                        params = []
+                        console.print(tablaCrearClientes1())
+                        params.append(input("\n" + " " * (os.get_terminal_size().columns // 2 - 2) + "> "))
+                        console.print(tablaCrearClientes2())
+                        params.append(input("\n" + " " * (os.get_terminal_size().columns // 2 - 2) + "> "))
+                        console.print(tablaCrearClientes3())
+                        params.append(input("\n" + " " * (os.get_terminal_size().columns // 2 - 2) + "> "))
+                        console.print(tablaCrearClientes4())
+                        params.append(input("\n" + " " * (os.get_terminal_size().columns // 2 - 2) + "> "))
+                        console.print(tablaCrearClientes5())
+                        params.append(input("\n" + " " * (os.get_terminal_size().columns // 2 - 2) + "> "))
+                        console.print(tablaCrearClientes6())
+                        params.append(input("\n" + " " * (os.get_terminal_size().columns // 2 - 2) + "> "))
+                        console.print(tablaCrearClientes7())
+                        params.append(input("\n" + " " * (os.get_terminal_size().columns // 2 - 2) + "> "))
+                        console.print(tablaCrearClientes8())
+                        params.append(input("\n" + " " * (os.get_terminal_size().columns // 2 - 2) + "> "))
+                        if(clientFuncs.addCliente(conn,params[0],params[1],params[2],params[3],params[4],params[5],params[6],params[7])):
+                            console.print(Align.center("Se inserto el cliente correctamente"))
+                    case "2":
+                        console.print(display_dataframe_in_box(pd.DataFrame(clientFuncs.getClientes(conn),columns=[
+                            "ID Cliente",
+                            "Nombre",
+                            "Telefono",
+                            "Email",
+                            "Calle",
+                            "Numero",
+                            "Numero Interior",
+                            "CP",
+                            "Referencias"
+                        ]),title="Clientes"))
 
-def tablaMenuPrincipal() -> RenderableType:
-    table = Table(
-        title="Menu principal",
-        box=box.MINIMAL,
-        show_header=False
-    )
-    table.add_column(justify="center")
-    table.add_row("1. Ordenes")
-    table.add_row("2. Menus y Platillos")
-    table.add_row("3. Clientes")
-    return Align.center(table)
-
+            # Menus y platillos
+            case "2":
+                pass
+            
 def clearScreen() -> None:
     if os.name != "nt":
         os.system('clear')
     else:
         os.system('cls')
 
-def create_header() -> RenderableType:
-    head = header
+# def create_header() -> RenderableType:
+    # head = header
 
-def createPanelCentral() -> RenderableType:
-    pass
+def createPanelCentrado(_contenido: RenderableType) -> RenderableType:
+    return Panel(
+        _contenido,
+        title='GKM',
+        border_style='white',
+        expand=False
+    )
+
 if __name__ == "__main__":
     clearScreen()
-    menuLoop()
+    menuLoop(createConn())
