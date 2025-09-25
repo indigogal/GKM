@@ -10,6 +10,7 @@ from tablas import *
 from connHelper import *
 import orderFuncs
 import clientFuncs
+import menuFuncs
 
 console = Console()
 
@@ -90,7 +91,48 @@ def menuLoop(conn:pymysql.Connection) -> None:
 
             # Menus y platillos
             case "2":
-                pass
+                console.print(Align.center(createPanelCentrado(tablaMenuPlatillos())))
+                menu_input = input("\n" + " " * (os.get_terminal_size().columns // 2 - 2) + "> ")
+                match menu_input:
+                    case "1":
+                        params = []
+                        console.print(tableCrearPlatillo1())
+                        params.append(input("\n" + " " * (os.get_terminal_size().columns // 2 - 2) + "> "))
+                        console.print(tableCrearPlatillo2())
+                        params.append(input("\n" + " " * (os.get_terminal_size().columns // 2 - 2) + "> "))
+                        console.print(tableCrearPlatillo3())
+                        params.append(input("\n" + " " * (os.get_terminal_size().columns // 2 - 2) + "> "))
+                        menuFuncs.createPlatillo(conn,params[0],params[1],params[2])
+                        pass
+                    case "2":
+                        params = []
+                        platillos = []
+                        console.print(tablaCrearMenu1())
+                        params.append(str(input("\n" + " " * (os.get_terminal_size().columns // 2 - 2) + "> ")).lower())
+                        console.print(tablaCrearMenu2())
+                        params.append(input("\n" + " " * (os.get_terminal_size().columns // 2 - 2) + "> "))
+                        console.print(tablaCrearMenu3())
+                        params.append(input("\n" + " " * (os.get_terminal_size().columns // 2 - 2) + "> "))
+                        for i in range(1,5):
+                            console.print(tablaCrearMenu5(i))
+                            platillos.append(input("\n" + " " * (os.get_terminal_size().columns // 2 - 2) + "> "))
+                        menuFuncs.createMenu(conn,platillos,params[0],params[1],params[2])
+                    case "4":
+                        console.print(display_dataframe_in_box(pd.DataFrame(menuFuncs.getMenus(conn),columns=[
+                            "ID Menu",
+                            "Tipo",
+                            "Semana",
+                            "Año",
+                            "Precio"
+                        ]),"Menus"))
+                    case "3":
+                        console.print(display_dataframe_in_box(pd.DataFrame(menuFuncs.getPlatillos(conn),columns=[
+                            "ID Platillo",
+                            "Nombre",
+                            "Descripcion",
+                            "Costo"
+                        ]),"Platillos"))
+                        pass
             
 def clearScreen() -> None:
     if os.name != "nt":
